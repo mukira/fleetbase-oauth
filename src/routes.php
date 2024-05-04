@@ -29,7 +29,7 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
 
                 $router->get('/auth/facebook/callback', function() {
 
-                    $facebookUser = Socialite::driver('facebook')->user();
+                    $facebookUser = Socialite::driver('facebook')->stateless()->user();
 
                     $key = config('services.fleetbase.storefront_key');
 
@@ -82,7 +82,7 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
 
                 $router->get('/auth/google/callback', function() {
 
-                    $googleUser = Socialite::driver('google')->user();
+                    $googleUser = Socialite::driver('google')->stateless()->user();
 
                     $key = config('services.fleetbase.storefront_key');
 
