@@ -15,11 +15,11 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
             ->group(function ($router) {
 
                 $router->get('/auth/facebook', function() {
-                    return Socialite::driver('facebook')->redirect();
+                    return Socialite::driver('facebook')->redirect()->getTargetUrl();
                 });
 
                 $router->get('/auth/google', function() {
-                    return Socialite::driver('google')->redirect();
+                    return Socialite::driver('google')->redirect()->getTargetUrl();
                 });
 
                 $router->get('/auth/facebook/callback', function() {
