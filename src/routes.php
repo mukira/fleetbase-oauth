@@ -3,6 +3,7 @@
 use Fleetbase\FleetOps\Models\Contact;
 use Fleetbase\Storefront\Http\Resources\Customer;
 use Fleetbase\Storefront\Support\Storefront;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -15,11 +16,13 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
             ->group(function ($router) {
 
                 $router->get('/auth/facebook', function() {
-                    return Socialite::driver('facebook')->redirect()->getTargetUrl();
+                    $url = Socialite::driver('facebook')->redirect()->getTargetUrl();
+                    return Response::json([ 'url' => $url ]);
                 });
 
                 $router->get('/auth/google', function() {
-                    return Socialite::driver('google')->redirect()->getTargetUrl();
+                    $url = Socialite::driver('google')->redirect()->getTargetUrl();
+                    return Response::json([ 'url' => $url ]);
                 });
 
                 $router->get('/auth/facebook/callback', function() {
