@@ -25,6 +25,13 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
                     return Response::json([ 'url' => $url ]);
                 });
 
+            });
+
+        Route::prefix('v1')
+            ->middleware('web')
+            ->namespace('v1')
+            ->group(function ($router) {
+
                 $router->get('/auth/facebook/callback', function() {
 
                     $facebookUser = Socialite::driver('facebook')->user();
