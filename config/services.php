@@ -22,5 +22,6 @@ return [
 
     'fleetbase' => [
         'storefront_key' => env('FLEETBASE_STOREFRONT_KEY'),
+        'app_redirect' => env('FLEETBASE_APP_REDIRECT'),
     ],
 ];

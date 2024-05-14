@@ -5,6 +5,7 @@ use Fleetbase\Storefront\Http\Resources\Customer;
 use Fleetbase\Storefront\Models\Network;
 use Fleetbase\Storefront\Models\Store;
 use Fleetbase\Storefront\Support\Storefront;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -18,13 +19,11 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
             ->group(function ($router) {
 
                 $router->get('/auth/facebook', function() {
-                    $url = Socialite::driver('facebook')->redirect()->getTargetUrl();
-                    return Response::json([ 'url' => $url ]);
+                    return Socialite::driver('facebook')->redirect();
                 });
 
                 $router->get('/auth/google', function() {
-                    $url = Socialite::driver('google')->redirect()->getTargetUrl();
-                    return Response::json([ 'url' => $url ]);
+                    return Socialite::driver('google')->redirect();
                 });
 
                 $router->get('/auth/facebook/callback', function() {
@@ -74,9 +73,9 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
                         return response()->errors($e->getMessage());
                     }
 
-                    $contact->token = $token->plainTextToken;
+                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken;
 
-                    return new Customer($contact);
+                    return response()->redirect($app_url);
 
                 });
 
@@ -127,9 +126,9 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
                         return response()->errors($e->getMessage());
                     }
 
-                    $contact->token = $token->plainTextToken;
+                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken;
 
-                    return new Customer($contact);
+                    return redirect($app_url);
 
                 });
 
