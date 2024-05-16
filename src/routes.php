@@ -8,6 +8,7 @@ use Fleetbase\Storefront\Support\Storefront;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
@@ -73,9 +74,11 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
                         return response()->errors($e->getMessage());
                     }
 
-                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken;
+                    $customer_id = Str::replaceFirst('contact', 'customer', $contact->public_id);
 
-                    return response()->redirect($app_url);
+                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken . '/' . $customer_id;
+
+                    return redirect($app_url);
 
                 });
 
@@ -126,7 +129,9 @@ Route::prefix(config('storefront.api.routing.prefix', 'storefront'))->group(
                         return response()->errors($e->getMessage());
                     }
 
-                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken;
+                    $customer_id = Str::replaceFirst('contact', 'customer', $contact->public_id);
+
+                    $app_url = trim(config('services.fleetbase.app_redirect')) . '/' . $token->plainTextToken . '/' . $customer_id;
 
                     return redirect($app_url);
 
